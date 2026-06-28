@@ -1,14 +1,35 @@
-console.log("js loaded!!");
+console.log("js loaded!!")
 
-console.log("start");
+let apikey = "a0a82aab60b441c0a7e111104252111&q";
 
-// http://api.weatherapi.com/v1/future.json?key=c062657689194ceaadb75352262806&q=colombo&dt=2026-07-28
+let txtCity = document.getElementById("txt_city");
 
-fetch("http://api.weatherapi.com/v1/future.json?key=c062657689194ceaadb75352262806&q=colombo&dt=2026-07-28")
-.then(res => res.json())
-.then(data => console.log(data));
+txtCity.addEventListener("keypress", e => {
+    if (e.key == "Enter") {
+        apiCall(txtCity.value)
+    }
+})
 
-console.log("end");
+let apiCall = async (city) => {
+    
+    await fetch(`http://api.weatherapi.com/v1/current.json?key=${apikey}&q=${city}&aqi=no`)
+    .then(res => res.json())
+    .then(data => {
+        setWeather(data);
+    })
 
-// console.log(fetch("http://api.weatherapi.com/v1/future.json?key=c062657689194ceaadb75352262806&q=colombo&dt=2026-07-28"))
+}
 
+let setWeather = (data) =>{
+    let city = document.getElementById("city_name");
+    let country = document.getElementById("country_name");
+    let main_temparature = document.getElementById("main_temparature")
+    let sun_rise_time = document.getElementById("sun_rise_time");
+    let sun_set_time = document.getElementById("sun_set_time");
+
+    city.innerText = data.location.name;
+
+    main_temparature.innerText = data.current.temp_c;
+
+    main_status_image.src = data.current.condition.icon
+}
